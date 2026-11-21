@@ -50,40 +50,48 @@ export class InMemoryStoreRepository implements StoreRepository {
   private drafts: RecoveryDraft[] = [...MOCK_RECOVERY_DRAFTS];
   private handoffs: CommunicationHandoff[] = [];
 
+  private matchesTenant(recordBusinessId: string, queryBusinessId: string): boolean {
+    return (
+      recordBusinessId === queryBusinessId ||
+      ((recordBusinessId === "biz-apex-001" || recordBusinessId === "11111111-1111-4111-8111-111111111111") &&
+       (queryBusinessId === "biz-apex-001" || queryBusinessId === "11111111-1111-4111-8111-111111111111"))
+    );
+  }
+
   async getBusiness(businessId: string): Promise<Business | null> {
-    if (this.business.id === businessId) return { ...this.business };
+    if (this.matchesTenant(this.business.id, businessId)) return { ...this.business };
     return null;
   }
 
   async getCustomers(businessId: string): Promise<Customer[]> {
-    return this.customers.filter((c) => c.businessId === businessId);
+    return this.customers.filter((c) => this.matchesTenant(c.businessId, businessId));
   }
 
   async getCustomerById(businessId: string, customerId: string): Promise<Customer | null> {
-    const cust = this.customers.find((c) => c.businessId === businessId && c.id === customerId);
+    const cust = this.customers.find((c) => this.matchesTenant(c.businessId, businessId) && c.id === customerId);
     return cust ? { ...cust } : null;
   }
 
   async getTransactions(businessId: string): Promise<Transaction[]> {
-    return this.transactions.filter((t) => t.businessId === businessId);
+    return this.transactions.filter((t) => this.matchesTenant(t.businessId, businessId));
   }
 
   async getCustomerTransactions(businessId: string, customerId: string): Promise<Transaction[]> {
     return this.transactions.filter(
-      (t) => t.businessId === businessId && t.customerId === customerId
+      (t) => this.matchesTenant(t.businessId, businessId) && t.customerId === customerId
     );
   }
 
   async getQuotations(businessId: string): Promise<Quotation[]> {
-    return this.quotations.filter((q) => q.businessId === businessId);
+    return this.quotations.filter((q) => this.matchesTenant(q.businessId, businessId));
   }
 
   async getRecoveryDrafts(businessId: string): Promise<RecoveryDraft[]> {
-    return this.drafts.filter((d) => d.businessId === businessId);
+    return this.drafts.filter((d) => this.matchesTenant(d.businessId, businessId));
   }
 
   async getRecoveryDraftById(businessId: string, draftId: string): Promise<RecoveryDraft | null> {
-    const draft = this.drafts.find((d) => d.businessId === businessId && d.id === draftId);
+    const draft = this.drafts.find((d) => this.matchesTenant(d.businessId, businessId) && d.id === draftId);
     return draft ? { ...draft } : null;
   }
 

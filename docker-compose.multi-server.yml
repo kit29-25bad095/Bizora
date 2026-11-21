@@ -1,0 +1,102 @@
+version: "3.8"
+
+services:
+  load_balancer:
+    image: nginx:alpine
+    container_name: bizora_load_balancer
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - web_1
+      - web_2
+    networks:
+      - bizora_cluster_net
+
+  web_1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bizora_web_1
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - INSTANCE_ID=web-node-01
+      - DATABASE_URL=postgresql://bizora_app:bizora_secure_pass@postgres:5432/bizora_db?sslmode=disable
+      - REDIS_URL=redis://redis:6379
+      - SESSION_SECRET=bizora_production_session_secret_32chars_min!
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - bizora_cluster_net
+
+  web_2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bizora_web_2
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - INSTANCE_ID=web-node-02
+      - DATABASE_URL=postgresql://bizora_app:bizora_secure_pass@postgres:5432/bizora_db?sslmode=disable
+      - REDIS_URL=redis://redis:6379
+      - SESSION_SECRET=bizora_production_session_secret_32chars_min!
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - bizora_cluster_net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: bizora_postgres_shared
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: bizora_app
+      POSTGRES_PASSWORD: bizora_secure_pass
+      POSTGRES_DB: bizora_db
+    volumes:
+      - bizora_pgdata_shared:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bizora_app -d bizora_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bizora_cluster_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: bizora_redis_shared
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - bizora_redisdata_shared:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bizora_cluster_net
+
+volumes:
+  bizora_pgdata_shared:
+  bizora_redisdata_shared:
+
+networks:
+  bizora_cluster_net:
+    driver: bridge

@@ -5,37 +5,65 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
-  Users,
-  FileSpreadsheet,
-  RotateCcw,
-  ShieldCheck,
   TrendingUp,
-  Store,
+  Users,
+  AlertTriangle,
+  RotateCcw,
   Sparkles,
+  FileEdit,
+  CheckCircle2,
+  Settings,
+  ShieldCheck,
+  Store,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
+export const NAV_ITEMS = [
   {
     label: "Overview",
     href: "/dashboard",
     icon: LayoutDashboard,
   },
   {
-    label: "Customers & Risk",
+    label: "Revenue Analytics",
+    href: "/dashboard/revenue",
+    icon: TrendingUp,
+  },
+  {
+    label: "Customers",
     href: "/dashboard/customers",
     icon: Users,
   },
   {
-    label: "Quotation Pipeline",
-    href: "/dashboard/quotations",
-    icon: FileSpreadsheet,
+    label: "Customer Risk",
+    href: "/dashboard/risk",
+    icon: AlertTriangle,
   },
   {
-    label: "Revenue Recovery",
+    label: "Recovery Opportunities",
     href: "/dashboard/recovery",
     icon: RotateCcw,
-    badge: "Action Req",
+  },
+  {
+    label: "Recommendations",
+    href: "/dashboard/recommendations",
+    icon: Sparkles,
+  },
+  {
+    label: "Campaign Drafts",
+    href: "/dashboard/drafts",
+    icon: FileEdit,
+  },
+  {
+    label: "Approvals",
+    href: "/dashboard/approvals",
+    icon: CheckCircle2,
+    badge: "Owner",
+  },
+  {
+    label: "Settings",
+    href: "/dashboard/settings",
+    icon: Settings,
   },
 ];
 
@@ -53,15 +81,15 @@ export function Sidebar() {
           <div>
             <span className="text-lg font-bold text-white tracking-tight">Bizora</span>
             <span className="block text-[10px] text-blue-400 font-semibold tracking-wider uppercase">
-              Revenue Intel
+              Intelligence
             </span>
           </div>
         </Link>
       </div>
 
       {/* Business Switcher Badge */}
-      <div className="px-4 py-3 mx-4 my-4 bg-slate-800/60 rounded-lg border border-slate-700/60 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-md bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+      <div className="px-4 py-3 mx-4 my-3 bg-slate-800/60 rounded-lg border border-slate-700/60 flex items-center gap-3">
+        <div className="w-8 h-8 rounded-md bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
           <Store className="w-4 h-4" />
         </div>
         <div className="overflow-hidden">
@@ -71,9 +99,9 @@ export function Sidebar() {
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 px-4 space-y-1.5 py-2">
-        <div className="px-3 pb-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-          Intelligence & Action
+      <nav className="flex-1 px-4 space-y-1 py-2 overflow-y-auto">
+        <div className="px-3 pb-2 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+          Platform Navigation
         </div>
         {NAV_ITEMS.map((item) => {
           const isActive =
@@ -114,13 +142,13 @@ export function Sidebar() {
       </nav>
 
       {/* Human In The Loop Safety Badge */}
-      <div className="p-4 m-4 bg-slate-800/40 rounded-xl border border-slate-700/40">
+      <div className="p-3.5 m-4 bg-slate-800/40 rounded-xl border border-slate-700/40">
         <div className="flex items-center gap-2 text-emerald-400 font-semibold text-xs mb-1">
           <ShieldCheck className="w-4 h-4" />
           <span>HITL Governance Active</span>
         </div>
         <p className="text-[11px] text-slate-400 leading-relaxed">
-          Zero automated messaging. Every customer communication requires explicit owner approval.
+          Zero automated messaging. Every customer outreach requires explicit human Owner sign-off.
         </p>
       </div>
 
@@ -128,10 +156,10 @@ export function Sidebar() {
       <div className="p-4 border-t border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-200">
-            JD
+            AO
           </div>
           <div className="text-xs">
-            <div className="font-medium text-white">John Davis</div>
+            <div className="font-medium text-white">Apex Owner</div>
             <div className="text-slate-400 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
               Owner (Admin)

@@ -1,0 +1,68 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bizora_web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=postgresql://bizora_app:bizora_secure_pass@postgres:5432/bizora_db?sslmode=disable
+      - REDIS_URL=redis://redis:6379
+      - SESSION_SECRET=bizora_production_session_secret_32chars_min!
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - bizora_network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: bizora_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: bizora_app
+      POSTGRES_PASSWORD: bizora_secure_pass
+      POSTGRES_DB: bizora_db
+    volumes:
+      - bizora_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bizora_app -d bizora_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bizora_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: bizora_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - bizora_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bizora_network
+
+volumes:
+  bizora_pgdata:
+    driver: local
+  bizora_redisdata:
+    driver: local
+
+networks:
+  bizora_network:
+    driver: bridge

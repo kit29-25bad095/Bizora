@@ -1,0 +1,84 @@
+name: Bizora Production Release Pipeline
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+concurrency:
+  group: production-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-verification:
+    name: Verify Release Candidate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run TypeScript typecheck
+        run: npm run typecheck
+
+      - name: Run Comprehensive Test Suite
+        run: npm run test
+        env:
+          NODE_ENV: test
+          SESSION_SECRET: ci_test_session_secret_at_least_32_characters_long!
+
+      - name: Compile Standalone Production Build
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+  docker-build:
+    name: Build & Scan Container Image
+    needs: [release-verification]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,format=long
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          load: true
+
+      - name: Container Security Vulnerability Scan (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.meta.outputs.tags }}
+          format: "table"
+          exit-code: "0"
+          ignore-unfixed: true
+          severity: "CRITICAL,HIGH"
