@@ -1,14 +1,14 @@
 import React from "react";
 import Link from "next/link";
-import { storeRepo } from "@/lib/data/repository";
-import { calculateStoreFinancials, calculateDailySalesTrend } from "@/lib/engine/financial";
-import { assessCustomerDormancy } from "@/lib/engine/dormancy";
-import { summarizeRecoveryOpportunities } from "@/lib/engine/recovery";
-import { KPICards } from "@/components/dashboard/KPICards";
-import { RevenueChart } from "@/components/dashboard/RevenueChart";
-import { RiskRadar } from "@/components/dashboard/RiskRadar";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { storeRepo } from "../../lib/data/repository";
+import { calculateStoreFinancials, calculateDailySalesTrend } from "../../lib/engine/financial";
+import { assessCustomerDormancy } from "../../lib/engine/dormancy";
+import { summarizeRecoveryOpportunities } from "../../lib/engine/recovery";
+import { KPICards } from "../../components/dashboard/KPICards";
+import { RevenueChart } from "../../components/dashboard/RevenueChart";
+import { RiskRadar } from "../../components/dashboard/RiskRadar";
+import { Button } from "../../components/ui/Button";
+import { Badge } from "../../components/ui/Badge";
 import { Sparkles, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 
 export default async function DashboardPage() {

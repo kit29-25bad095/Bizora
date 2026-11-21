@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { apiClient } from "@/lib/api/client";
-import { formatMinorUnits } from "@/lib/engine/currency";
-import { KPICard } from "@/components/ui/KPICard";
-import { ChartContainer } from "@/components/ui/ChartContainer";
-import { DataTable, Column } from "@/components/ui/DataTable";
-import { DateRangeSelector, DateRange } from "@/components/ui/DateRangeSelector";
-import { Badge } from "@/components/ui/Badge";
-import { ErrorState } from "@/components/ui/ErrorState";
+import { apiClient } from "../../../lib/api/client";
+import { formatMinorUnits } from "../../../lib/engine/currency";
+import { KPICard } from "../../../components/ui/KPICard";
+import { ChartContainer } from "../../../components/ui/ChartContainer";
+import { DataTable, Column } from "../../../components/ui/DataTable";
+import { DateRangeSelector, DateRange } from "../../../components/ui/DateRangeSelector";
+import { Badge } from "../../../components/ui/Badge";
+import { ErrorState } from "../../../components/ui/ErrorState";
 import { DollarSign, TrendingUp, CreditCard, Banknote, RefreshCcw } from "lucide-react";
 
 interface FinancialData {

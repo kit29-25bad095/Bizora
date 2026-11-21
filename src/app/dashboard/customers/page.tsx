@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { storeRepo } from "@/lib/data/repository";
-import { assessCustomerDormancy } from "@/lib/engine/dormancy";
-import { formatMinorUnits } from "@/lib/engine/currency";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { storeRepo } from "../../../lib/data/repository";
+import { assessCustomerDormancy } from "../../../lib/engine/dormancy";
+import { formatMinorUnits } from "../../../lib/engine/currency";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../../../components/ui/Card";
+import { Badge } from "../../../components/ui/Badge";
+import { Button } from "../../../components/ui/Button";
 import { Users, Clock, Sparkles, Filter, Phone, Mail } from "lucide-react";
 
 export default async function CustomersPage() {

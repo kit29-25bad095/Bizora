@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { apiClient } from "@/lib/api/client";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { ConfirmationDialog } from "@/components/ui/ConfirmationDialog";
-import { Modal } from "@/components/ui/Modal";
-import { Tabs } from "@/components/ui/Tabs";
-import { ErrorState } from "@/components/ui/ErrorState";
+import { apiClient } from "../../../lib/api/client";
+import { Card } from "../../../components/ui/Card";
+import { Badge } from "../../../components/ui/Badge";
+import { Button } from "../../../components/ui/Button";
+import { ConfirmationDialog } from "../../../components/ui/ConfirmationDialog";
+import { Modal } from "../../../components/ui/Modal";
+import { Tabs } from "../../../components/ui/Tabs";
+import { ErrorState } from "../../../components/ui/ErrorState";
 import {
   CheckCircle2,
   XCircle,

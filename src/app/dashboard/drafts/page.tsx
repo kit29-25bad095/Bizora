@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { apiClient } from "@/lib/api/client";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Tabs } from "@/components/ui/Tabs";
-import { Modal } from "@/components/ui/Modal";
-import { ErrorState } from "@/components/ui/ErrorState";
+import { apiClient } from "../../../lib/api/client";
+import { Card } from "../../../components/ui/Card";
+import { Badge } from "../../../components/ui/Badge";
+import { Button } from "../../../components/ui/Button";
+import { Tabs } from "../../../components/ui/Tabs";
+import { Modal } from "../../../components/ui/Modal";
+import { ErrorState } from "../../../components/ui/ErrorState";
 import { FileEdit, MessageSquare, Mail, CheckCircle2, Clock, XCircle, ArrowRight } from "lucide-react";
 
 interface DraftItem {

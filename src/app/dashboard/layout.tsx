@@ -1,6 +1,6 @@
 import React from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { TopNav } from "@/components/layout/TopNav";
+import { Sidebar } from "../../components/layout/Sidebar";
+import { TopNav } from "../../components/layout/TopNav";
 
 export default function DashboardLayout({
   children,

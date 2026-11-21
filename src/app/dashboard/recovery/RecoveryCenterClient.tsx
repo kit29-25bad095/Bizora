@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { RecoveryDraft } from "@/types/domain";
-import { RecoveryDraftCard } from "@/components/recovery/RecoveryDraftCard";
-import { HandoffModal } from "@/components/recovery/HandoffModal";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { RecoveryDraft } from "../../../types/domain";
+import { RecoveryDraftCard } from "../../../components/recovery/RecoveryDraftCard";
+import { HandoffModal } from "../../../components/recovery/HandoffModal";
+import { Badge } from "../../../components/ui/Badge";
+import { Button } from "../../../components/ui/Button";
 import { approveDraftAction, rejectDraftAction, recordHandoffOutcomeAction } from "./actions";
 import { Sparkles, ShieldCheck, Filter, AlertCircle, CheckCircle2 } from "lucide-react";
 

@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { apiClient } from "@/lib/api/client";
-import { formatMinorUnits } from "@/lib/engine/currency";
-import { KPICard } from "@/components/ui/KPICard";
-import { DataTable, Column } from "@/components/ui/DataTable";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { ErrorState } from "@/components/ui/ErrorState";
+import { apiClient } from "../../../lib/api/client";
+import { formatMinorUnits } from "../../../lib/engine/currency";
+import { KPICard } from "../../../components/ui/KPICard";
+import { DataTable, Column } from "../../../components/ui/DataTable";
+import { Badge } from "../../../components/ui/Badge";
+import { Button } from "../../../components/ui/Button";
+import { ErrorState } from "../../../components/ui/ErrorState";
 import { AlertTriangle, ShieldAlert, Sparkles, UserX, Clock } from "lucide-react";
 
 interface RiskProfile {

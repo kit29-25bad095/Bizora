@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { apiClient } from "@/lib/api/client";
-import { formatMinorUnits } from "@/lib/engine/currency";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { ErrorState } from "@/components/ui/ErrorState";
+import { apiClient } from "../../../lib/api/client";
+import { formatMinorUnits } from "../../../lib/engine/currency";
+import { Card } from "../../../components/ui/Card";
+import { Badge } from "../../../components/ui/Badge";
+import { Button } from "../../../components/ui/Button";
+import { ErrorState } from "../../../components/ui/ErrorState";
 import { Sparkles, MessageSquare, Mail, ShieldAlert, ArrowRight, CheckCircle2 } from "lucide-react";
 
 interface RiskProfile {
