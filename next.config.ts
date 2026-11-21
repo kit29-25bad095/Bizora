@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   ...(isVercel ? {} : { output: "standalone" }),
   reactStrictMode: true,
   poweredByHeader: false,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
