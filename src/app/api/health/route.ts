@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { tenantCache } from "@/lib/cache";
 
-export async function GET(req: NextRequest) {
+export async function GET(req?: NextRequest | Request) {
   const timestamp = new Date().toISOString();
   const uptime = process.uptime();
   const version = process.env.npm_package_version || "1.0.0";
