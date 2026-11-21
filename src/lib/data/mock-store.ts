@@ -1,0 +1,466 @@
+/**
+ * BIZORA DEMO SEED DATA
+ * Fictional retail & quotation merchant dataset for demonstrable MVP execution.
+ * CLEARLY LABELED FICTIONAL SEED DATA — Not connected to live production DB.
+ */
+
+import { Business, Customer, Transaction, Quotation, RecoveryDraft, CommunicationHandoff } from "@/types/domain";
+
+export const MOCK_BUSINESS: Business = {
+  id: "biz-apex-001",
+  name: "Apex Hardware & Trade Supplies",
+  slug: "apex-hardware",
+  industry: "retail",
+  baseCurrency: "USD",
+  currencyExponent: 2,
+  timezone: "America/New_York",
+  status: "active",
+  createdAt: "2025-01-15T08:00:00Z",
+};
+
+export const MOCK_CUSTOMERS: Customer[] = [
+  {
+    id: "cust-001",
+    businessId: "biz-apex-001",
+    externalCustomerId: "ACC-1001",
+    name: "Miller Construction Services",
+    email: "procurement@millerbuilders.com",
+    phone: "+15552345678",
+    tags: ["Wholesale", "Contractor", "High-Volume"],
+    firstSeenAt: "2025-02-10T10:00:00Z",
+    lastActivityAt: "2026-08-20T14:30:00Z", // Inactive for ~90 days
+    totalSpendMinorUnits: 1458000n, // $14,580.00
+    totalOrders: 14,
+    averageOrderValueMinorUnits: 104142n, // ~$1,041.42
+    status: "active",
+  },
+  {
+    id: "cust-002",
+    businessId: "biz-apex-001",
+    externalCustomerId: "ACC-1002",
+    name: "Oakridge Cabinetry & Woodworks",
+    email: "dave@oakridgewood.com",
+    phone: "+15553456789",
+    tags: ["Trade", "Cabinetry"],
+    firstSeenAt: "2025-04-12T11:20:00Z",
+    lastActivityAt: "2026-10-15T09:15:00Z", // Active recently (~35 days)
+    totalSpendMinorUnits: 842000n, // $8,420.00
+    totalOrders: 9,
+    averageOrderValueMinorUnits: 93555n, // ~$935.55
+    status: "active",
+  },
+  {
+    id: "cust-003",
+    businessId: "biz-apex-001",
+    externalCustomerId: "ACC-1003",
+    name: "Horizon Plumbing & Electrical",
+    email: "contact@horizonpe.com",
+    phone: "+15554567890",
+    tags: ["Trade", "Plumbing"],
+    firstSeenAt: "2025-06-01T15:00:00Z",
+    lastActivityAt: "2026-07-05T12:00:00Z", // Inactive for ~140 days (Critical)
+    totalSpendMinorUnits: 620000n, // $6,200.00
+    totalOrders: 7,
+    averageOrderValueMinorUnits: 88571n, // ~$885.71
+    status: "active",
+  },
+  {
+    id: "cust-004",
+    businessId: "biz-apex-001",
+    externalCustomerId: "ACC-1004",
+    name: "Greenline Landscaping Co.",
+    email: "ops@greenlineland.com",
+    phone: "+15555678901",
+    tags: ["Landscaping", "Commercial"],
+    firstSeenAt: "2025-08-15T09:40:00Z",
+    lastActivityAt: "2026-11-10T16:00:00Z", // Very active (11 days ago)
+    totalSpendMinorUnits: 435000n, // $4,350.00
+    totalOrders: 6,
+    averageOrderValueMinorUnits: 72500n, // ~$725.00
+    status: "active",
+  },
+  {
+    id: "cust-005",
+    businessId: "biz-apex-001",
+    externalCustomerId: "ACC-1005",
+    name: "Summit Roofing Specialists",
+    email: "brian@summitroof.com",
+    phone: "+15556789012",
+    tags: ["Roofing", "Contractor"],
+    firstSeenAt: "2025-09-01T14:10:00Z",
+    lastActivityAt: "2026-06-18T11:00:00Z", // Inactive for >150 days (Critical churn)
+    totalSpendMinorUnits: 980000n, // $9,800.00
+    totalOrders: 8,
+    averageOrderValueMinorUnits: 122500n, // ~$1,225.00
+    status: "active",
+  },
+  {
+    id: "cust-006",
+    businessId: "biz-apex-001",
+    externalCustomerId: "ACC-1006",
+    name: "Precision Tile & Masonry",
+    email: "info@precisionmasonry.com",
+    phone: "+15557890123",
+    tags: ["Masonry", "Residential"],
+    firstSeenAt: "2026-09-10T10:00:00Z",
+    lastActivityAt: "2026-10-02T13:45:00Z",
+    totalSpendMinorUnits: 125000n, // $1,250.00
+    totalOrders: 2, // < 3 orders => insufficient_history
+    averageOrderValueMinorUnits: 62500n,
+    status: "active",
+  },
+];
+
+export const MOCK_TRANSACTIONS: Transaction[] = [
+  // Miller Construction Transactions
+  {
+    id: "tx-101",
+    businessId: "biz-apex-001",
+    customerId: "cust-001",
+    customerName: "Miller Construction Services",
+    externalTransactionId: "INV-2026-8801",
+    transactionDate: "2026-04-10T10:15:00Z",
+    grossAmountMinorUnits: 125000n,
+    discountAmountMinorUnits: 5000n,
+    taxAmountMinorUnits: 8400n,
+    netAmountMinorUnits: 120000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 120000n, // $1,200.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "bank_transfer",
+  },
+  {
+    id: "tx-102",
+    businessId: "biz-apex-001",
+    customerId: "cust-001",
+    customerName: "Miller Construction Services",
+    externalTransactionId: "INV-2026-8842",
+    transactionDate: "2026-05-18T14:20:00Z",
+    grossAmountMinorUnits: 154000n,
+    discountAmountMinorUnits: 4000n,
+    taxAmountMinorUnits: 10500n,
+    netAmountMinorUnits: 150000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 150000n, // $1,500.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "bank_transfer",
+  },
+  {
+    id: "tx-103",
+    businessId: "biz-apex-001",
+    customerId: "cust-001",
+    customerName: "Miller Construction Services",
+    externalTransactionId: "INV-2026-8910",
+    transactionDate: "2026-06-25T11:00:00Z",
+    grossAmountMinorUnits: 215000n,
+    discountAmountMinorUnits: 15000n,
+    taxAmountMinorUnits: 14000n,
+    netAmountMinorUnits: 200000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 200000n, // $2,000.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "bank_transfer",
+  },
+  {
+    id: "tx-104",
+    businessId: "biz-apex-001",
+    customerId: "cust-001",
+    customerName: "Miller Construction Services",
+    externalTransactionId: "INV-2026-9040",
+    transactionDate: "2026-08-20T14:30:00Z",
+    grossAmountMinorUnits: 185000n,
+    discountAmountMinorUnits: 5000n,
+    taxAmountMinorUnits: 12600n,
+    netAmountMinorUnits: 180000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 180000n, // $1,800.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "bank_transfer",
+  },
+
+  // Oakridge Cabinetry Transactions
+  {
+    id: "tx-201",
+    businessId: "biz-apex-001",
+    customerId: "cust-002",
+    customerName: "Oakridge Cabinetry & Woodworks",
+    externalTransactionId: "INV-2026-9120",
+    transactionDate: "2026-07-22T09:30:00Z",
+    grossAmountMinorUnits: 98000n,
+    discountAmountMinorUnits: 3000n,
+    taxAmountMinorUnits: 6650n,
+    netAmountMinorUnits: 95000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 95000n, // $950.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "pos",
+  },
+  {
+    id: "tx-202",
+    businessId: "biz-apex-001",
+    customerId: "cust-002",
+    customerName: "Oakridge Cabinetry & Woodworks",
+    externalTransactionId: "INV-2026-9280",
+    transactionDate: "2026-09-02T16:10:00Z",
+    grossAmountMinorUnits: 130000n,
+    discountAmountMinorUnits: 5000n,
+    taxAmountMinorUnits: 8750n,
+    netAmountMinorUnits: 125000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 125000n, // $1,250.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "pos",
+  },
+  {
+    id: "tx-203",
+    businessId: "biz-apex-001",
+    customerId: "cust-002",
+    customerName: "Oakridge Cabinetry & Woodworks",
+    externalTransactionId: "INV-2026-9415",
+    transactionDate: "2026-10-15T09:15:00Z",
+    grossAmountMinorUnits: 115000n,
+    discountAmountMinorUnits: 5000n,
+    taxAmountMinorUnits: 7700n,
+    netAmountMinorUnits: 110000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 110000n, // $1,100.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "pos",
+  },
+
+  // Greenline Landscaping (Recent Transactions)
+  {
+    id: "tx-401",
+    businessId: "biz-apex-001",
+    customerId: "cust-004",
+    customerName: "Greenline Landscaping Co.",
+    externalTransactionId: "INV-2026-9502",
+    transactionDate: "2026-10-20T11:45:00Z",
+    grossAmountMinorUnits: 82000n,
+    discountAmountMinorUnits: 2000n,
+    taxAmountMinorUnits: 5600n,
+    netAmountMinorUnits: 80000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 80000n, // $800.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "online",
+  },
+  {
+    id: "tx-402",
+    businessId: "biz-apex-001",
+    customerId: "cust-004",
+    customerName: "Greenline Landscaping Co.",
+    externalTransactionId: "INV-2026-9630",
+    transactionDate: "2026-11-10T16:00:00Z",
+    grossAmountMinorUnits: 74000n,
+    discountAmountMinorUnits: 4000n,
+    taxAmountMinorUnits: 4900n,
+    netAmountMinorUnits: 70000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 70000n, // $700.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "online",
+  },
+
+  // Summit Roofing (Historical Transactions prior to dormancy)
+  {
+    id: "tx-501",
+    businessId: "biz-apex-001",
+    customerId: "cust-005",
+    customerName: "Summit Roofing Specialists",
+    externalTransactionId: "INV-2026-8310",
+    transactionDate: "2026-02-14T08:30:00Z",
+    grossAmountMinorUnits: 240000n,
+    discountAmountMinorUnits: 10000n,
+    taxAmountMinorUnits: 16100n,
+    netAmountMinorUnits: 230000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 230000n,
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "bank_transfer",
+  },
+  {
+    id: "tx-502",
+    businessId: "biz-apex-001",
+    customerId: "cust-005",
+    customerName: "Summit Roofing Specialists",
+    externalTransactionId: "INV-2026-8550",
+    transactionDate: "2026-04-12T13:00:00Z",
+    grossAmountMinorUnits: 285000n,
+    discountAmountMinorUnits: 15000n,
+    taxAmountMinorUnits: 18900n,
+    netAmountMinorUnits: 270000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 270000n,
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "bank_transfer",
+  },
+  {
+    id: "tx-503",
+    businessId: "biz-apex-001",
+    customerId: "cust-005",
+    customerName: "Summit Roofing Specialists",
+    externalTransactionId: "INV-2026-8790",
+    transactionDate: "2026-06-18T11:00:00Z",
+    grossAmountMinorUnits: 320000n,
+    discountAmountMinorUnits: 20000n,
+    taxAmountMinorUnits: 21000n,
+    netAmountMinorUnits: 300000n,
+    refundedAmountMinorUnits: 0n,
+    amountMinorUnits: 300000n, // $3,000.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "completed",
+    settlementStatus: "settled",
+    paymentChannel: "bank_transfer",
+  },
+];
+
+export const MOCK_QUOTATIONS: Quotation[] = [
+  {
+    id: "quote-301",
+    businessId: "biz-apex-001",
+    customerId: "cust-001",
+    customerName: "Miller Construction Services",
+    quoteNumber: "Q-2026-094",
+    issuedDate: "2026-10-01T10:00:00Z",
+    validUntilDate: "2026-10-25T23:59:59Z", // Expired
+    sentAt: "2026-10-01T11:15:00Z",
+    sentChannel: "email",
+    amountMinorUnits: 485000n, // $4,850.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "expired",
+    probabilityPercentage: 65,
+    itemsDescription: "Bulk Structural Lumber & Framing Anchors (Job #42-B)",
+    createdAt: "2026-10-01T10:00:00Z",
+  },
+  {
+    id: "quote-302",
+    businessId: "biz-apex-001",
+    customerId: "cust-003",
+    customerName: "Horizon Plumbing & Electrical",
+    quoteNumber: "Q-2026-112",
+    issuedDate: "2026-10-20T14:30:00Z",
+    validUntilDate: "2026-11-20T23:59:59Z", // Expired yesterday
+    sentAt: "2026-10-20T15:00:00Z",
+    sentChannel: "whatsapp",
+    amountMinorUnits: 275000n, // $2,750.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "sent",
+    probabilityPercentage: 70,
+    itemsDescription: "Commercial Copper Pipe Bundles & Fittings",
+    createdAt: "2026-10-20T14:30:00Z",
+  },
+  {
+    id: "quote-303",
+    businessId: "biz-apex-001",
+    customerId: "cust-002",
+    customerName: "Oakridge Cabinetry & Woodworks",
+    quoteNumber: "Q-2026-128",
+    issuedDate: "2026-11-05T09:00:00Z",
+    validUntilDate: "2026-12-05T23:59:59Z", // Open & active
+    sentAt: "2026-11-05T09:30:00Z",
+    sentChannel: "email",
+    amountMinorUnits: 360000n, // $3,600.00
+    currency: "USD",
+    currencyExponent: 2,
+    status: "sent",
+    probabilityPercentage: 80,
+    itemsDescription: "Specialty Veneer Plywood & European Soft-Close Hinges",
+    createdAt: "2026-11-05T09:00:00Z",
+  },
+];
+
+export const MOCK_RECOVERY_DRAFTS: RecoveryDraft[] = [
+  {
+    id: "draft-001",
+    businessId: "biz-apex-001",
+    customerId: "cust-001",
+    customerName: "Miller Construction Services",
+    recipientIdentifier: "+15552345678",
+    suggestedChannel: "whatsapp",
+    draftBody:
+      "Hi Miller Construction team! Following up from Apex Hardware. We noticed you haven't placed an order in over 90 days. We have new wholesale stock for framing and fasteners arriving this week. Can we help you with any upcoming project supply runs?",
+    aiRationale:
+      "Customer typically orders every 35-45 days, but has been inactive for 93 days (2.3x average cycle). Historic AOV is $1,041.42. High risk of supplier defection.",
+    aiRiskScore: 78,
+    aiPromptVersion: "v1.2-retail-winback",
+    status: "pending_approval",
+    createdAt: "2026-11-20T10:00:00Z",
+    updatedAt: "2026-11-20T10:00:00Z",
+  },
+  {
+    id: "draft-002",
+    businessId: "biz-apex-001",
+    customerId: "cust-005",
+    customerName: "Summit Roofing Specialists",
+    recipientIdentifier: "brian@summitroof.com",
+    suggestedChannel: "email",
+    draftSubject: "Checking in from Apex Hardware & Trade Supplies",
+    draftBody:
+      "Dear Brian,\n\nWe wanted to reach out from Apex Hardware. Summit Roofing has been a valued trade partner, with over $9,800 in orders across past seasons. We noticed it's been over 5 months since your last roofing supply run.\n\nWe would love to know if you have upcoming commercial roof replacements scheduled. Reply directly to this email if we can prepare a dedicated contractor discount for your next palette.\n\nBest regards,\nApex Hardware Team",
+    aiRationale:
+      "Customer was previously a regular quarterly buyer ($1,225 AOV) but has been silent for 156 days. Churn risk is CRITICAL.",
+    aiRiskScore: 92,
+    aiPromptVersion: "v1.2-retail-winback",
+    status: "pending_approval",
+    createdAt: "2026-11-21T08:30:00Z",
+    updatedAt: "2026-11-21T08:30:00Z",
+  },
+  {
+    id: "draft-003",
+    businessId: "biz-apex-001",
+    customerId: "cust-003",
+    customerName: "Horizon Plumbing & Electrical",
+    quotationId: "quote-302",
+    quoteNumber: "Q-2026-112",
+    recipientIdentifier: "+15554567890",
+    suggestedChannel: "whatsapp",
+    draftBody:
+      "Hello Horizon Plumbing team! Checking in regarding Quotation #Q-2026-112 ($2,750.00) for Commercial Copper Pipe Bundles. The quote expired yesterday. Are you still planning on these supplies? We can extend pricing through Friday if you need them reserved.",
+    aiRationale:
+      "Quotation #Q-2026-112 lapsed with high estimated win probability (70%). Follow-up within 48h of expiration historically recovers 35% of lost quotes.",
+    aiRiskScore: 82,
+    aiPromptVersion: "v1.2-quote-recovery",
+    status: "approved",
+    approvedByUserId: "user-owner-001",
+    approvedAt: "2026-11-21T11:00:00Z",
+    createdAt: "2026-11-20T16:00:00Z",
+    updatedAt: "2026-11-21T11:00:00Z",
+  },
+];
