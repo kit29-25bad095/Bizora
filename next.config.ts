@@ -1,9 +1,19 @@
 import type { NextConfig } from "next";
+import path from "node:path";
+
+const isVercel = process.env.VERCEL === "1";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  ...(isVercel ? {} : { output: "standalone" }),
   reactStrictMode: true,
   poweredByHeader: false,
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@": path.resolve(__dirname, "src"),
+    };
+    return config;
+  },
   async headers() {
     return [
       {
